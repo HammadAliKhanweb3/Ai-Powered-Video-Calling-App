@@ -5,6 +5,7 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form"
 import Link from "next/link"
 import { authClient } from "@/lib/auth-client"
+import {FaGoogle,FaGithub} from "react-icons/fa"
 
 
 
@@ -16,8 +17,9 @@ import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/com
 import { Alert,AlertTitle } from "@/components/ui/alert"
 import {  OctagonAlertIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+
 
 const formSchema  = z.object({
 name:z.string().min(1,{message:"Name is required"}),
@@ -31,7 +33,6 @@ path:["confirmPassword"]}
 
 )
 const SignUpView = () => {
-
   const router = useRouter()
   const [error,setError] = useState<string | null> (null)
   const [pending,setPending] = useState(false)
@@ -48,29 +49,47 @@ const SignUpView = () => {
 
 
  const onSubmit =async (data: z.infer<typeof formSchema>)=>{
+  setError(null)
     setPending(true)
- 
  const {name,email,password} = data
   console.log(email,password);
   
 await authClient.signUp.email ({
   name,
   email,
-  password
+  password,
+  callbackURL:"/"
  },
+
 
  {
    onSuccess:()=>{
     setPending(false)
-  router.push("/")},
+    router.push("/")
+  },
  
   onError:({error})=>{
+    setPending(false)
   setError(error.message)
  }}
 )
+}
 
-
-
+const onSocial = (provider:"github" | "google")=> {
+  setError(null)
+  setPending(true)
+  
+  authClient.signIn.social({
+    provider:provider,
+    callbackURL:"/"
+  },{
+    onSuccess:()=>{
+     setPending(false)
+    },
+    onError:({error})=>{
+     setError(error.message)
+    }
+  })
 
  }
 
@@ -79,7 +98,7 @@ await authClient.signUp.email ({
     <Card className="overflow-hidden p-0">
     <CardContent className="grid p-0  md:grid-cols-2">
     <Form {...form}> 
-        <form action="submit" onSubmit={form.handleSubmit(onSubmit)} className="p-8" >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="p-8" >
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center text-center">
               <h1 className="text-2xl font-bold">Let's Get Started</h1>
@@ -192,7 +211,7 @@ await authClient.signUp.email ({
             {!!error && (
               <Alert className="bg-destructive/10 border-none">
                 <OctagonAlertIcon className="h-4 w-4 !text-destructive"/>
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{error}</AlertTitle>
               </Alert>
             )}
             <Button disabled={pending} className="w-fulll">Sign Up</Button>
@@ -202,12 +221,16 @@ await authClient.signUp.email ({
 </span>
             </div>
             <div  className="grid grid-cols-2 gap-4">
-              <Button variant="outline" type="button" className="w-full">
-                Google
+              <Button disabled={pending} 
+               onClick={()=>onSocial("google")} 
+              variant="outline" type="button" className="w-full">
+                <FaGoogle/>
               </Button>
               
-              <Button variant="outline" type="button" className="w-full">
-                Github
+              <Button disabled={pending}
+                           onClick={()=>onSocial("github")} 
+                           variant="outline" type="button" className="w-full">
+              <FaGithub/>
               </Button>
 
             </div>
