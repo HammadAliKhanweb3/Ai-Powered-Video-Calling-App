@@ -18,6 +18,7 @@ import {  OctagonAlertIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { FaGithub, FaGoogle } from "react-icons/fa"
+import { useRouter } from "next/navigation"
 
 const formSchema  = z.object({
  
@@ -31,7 +32,7 @@ password:z.string().min(1,{message:"Password is required"})
 
 const SignInView = () => {
 
-  
+  const router = useRouter()
   const [error,setError] = useState<string | null> (null)
   const [pending ,setPending] = useState(false)
 
@@ -79,6 +80,7 @@ await authClient.signIn.email ({
   },{
     onSuccess:()=>{
      setPending(false)
+     router.push("/")
     },
     onError:({error})=>{
       setPending(false)
@@ -192,7 +194,7 @@ await authClient.signIn.email ({
       
 
 
-      <div className="bg-radial from-green-700 to-green-900 p-4 relative hidden md:flex flex-col gap-y-4
+      <div className="bg-radial from-sidebar-accent to-sidebar p-4 relative hidden md:flex flex-col gap-y-4
       items-center justify-center">
         <img src="/logo.png" alt="image"  className="h-[60px] w-[92px]"/>
         <p className="text-3xl font-semibold text-white">Meet.Ai</p>
