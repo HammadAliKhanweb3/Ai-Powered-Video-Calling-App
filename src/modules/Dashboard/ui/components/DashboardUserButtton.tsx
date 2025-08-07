@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuSubContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { GeneratedAvatar } from "@/components/ui/generated-avatar"
+import { GeneratedAvatar } from "@/components/generated-avatar"
 import { authClient } from "@/lib/auth-client"
 import { ChevronDownIcon, CreditCardIcon, LogOutIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
