@@ -8,12 +8,9 @@ import { useQuery } from '@tanstack/react-query';
 
 const HomeView = () => {
 
-  const trpc = useTRPC();
-  const {data} = useQuery(trpc.hello.queryOptions({text:"Amazing Person"}))
-
   return (
     <div>
-   {data?.greeting}
+   Home View
   </div>
   )
 }

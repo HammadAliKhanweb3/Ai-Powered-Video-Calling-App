@@ -15,7 +15,7 @@ const HomeLayout = ({children}:Props) => {
           <DashBoardSideBar/>
             <main className="flex flex-col h-screen w-screen bg-muted">
               <DashBoardNavbar/>
-                {children}
+              {children}
             </main>
         
     </SidebarProvider>
