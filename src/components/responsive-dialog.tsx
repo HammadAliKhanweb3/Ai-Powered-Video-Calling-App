@@ -7,6 +7,7 @@ import {  Drawer,
     DrawerDescription} from "./ui/drawer"
 import React from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog"
+import { openSync } from "fs"
 
 
 
@@ -43,7 +44,7 @@ export const ResponsiveDialog = ({title,description,children,open,onOpenChange}:
     }
 
     return (
-        <Dialog open onOpenChange={onOpenChange}>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>

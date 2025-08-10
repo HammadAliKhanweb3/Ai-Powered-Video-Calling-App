@@ -19,17 +19,6 @@ export const AgentsView = () => {
   return (
 
     <div>
-      <ResponsiveDialog 
-      title="Dialog test" 
-      description="responsie dialog test description"
-      open
-      onOpenChange={()=>{}} >
-
-          <Button>
-            Search
-          </Button>
-        </ResponsiveDialog>
-
        {JSON.stringify(data,null,2)}
     </div>
   )
