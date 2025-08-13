@@ -7,19 +7,30 @@ import { columns } from "@/components/ui/coloumn"
 import { DataTable } from "@/components/ui/data-table"
 import { useTRPC } from "@/trpc/client"
 import {  useSuspenseQuery } from "@tanstack/react-query"
+import { useAgentsFilters } from "../../hooks/agents-filter"
+import { DataPagination} from "../../components/data-pagination"
+import page from "@/app/(dashboard)/page"
 
 export const AgentsView = () => {
+   const [filters,setFilters]=useAgentsFilters()
     const trpc = useTRPC()
  
-    const {data} = useSuspenseQuery(trpc.agents.getMany.queryOptions()) 
+    const {data} = useSuspenseQuery(trpc.agents.getMany.queryOptions({
+      ...filters
+    })) 
     
   
 
-  return (
+  return ( 
 
     <div className="flex-1 flex flex-col pb-4 px-4 md:px-8 gap-y-4 " >
-       <DataTable data={data} columns={columns}/>
-       {data.length === 0 && (
+       <DataTable data={data.items} columns={columns}/>
+       <DataPagination
+       page={filters.page}
+       totalPages={data.totalPages}
+       onPageChange={(page)=>setFilters({page})}
+       />
+       {data.items.length === 0 && (
          <EmptyState
          title="Create your first agent"
          description="Create an agent to join your meetings. Each agent will follow
