@@ -8,6 +8,7 @@ import Link from "next/link";
 
 
 
+
 interface Props{
     agentId:string;
     agentName:string;
@@ -19,6 +20,7 @@ interface Props{
 
 
 export const AgentsIdViewheader = ({agentId,agentName,onRemove,onEdit}:Props)=>{
+  
 
 return(
     <div className="flex items-center justify-between">
