@@ -20,11 +20,11 @@ import { toast } from "sonner"
 interface AgentFormProps{
 onSuccess:()=>void,
 onCancel:()=>void,  
-initialValues:AgentGetOne
+initialValues?:AgentGetOne
 }
 
 
- export const AgentForm = ({onSuccess,onCancel,initialValues}:AgentFormProps) =>{
+ export const  AgentForm = ({onSuccess,onCancel,initialValues}:AgentFormProps) =>{
 
   const trpc = useTRPC()
   const router = useRouter()
@@ -32,6 +32,28 @@ initialValues:AgentGetOne
 
   const createAgent = useMutation(
     trpc.agents.create.mutationOptions(
+        {
+            onSuccess:async (     
+            )=>{
+                await queryClient.invalidateQueries(
+                    trpc.agents.getMany.queryOptions({})
+                )
+                onSuccess?.()
+            },   
+             
+            //Todo: Invalidate free tier usage
+
+            onError:(error)=>{
+            toast.error(error.message)
+
+            // Todo check if error code is "FORBIDDEN",redirect to upgrade
+            },
+        }
+    )
+  )
+  
+  const updateAgent = useMutation(
+    trpc.agents.update.mutationOptions(
         {
             onSuccess:async (     
             )=>{
@@ -68,14 +90,14 @@ initialValues:AgentGetOne
   })
   
   const isEdit = !!initialValues?.id
-  const isPending = createAgent.isPending
+  const isPending = createAgent.isPending || updateAgent.isPending
    
 
  
   const onSubmit =(values:z.infer<typeof agentInsertSchema>)=>{
    
        if(isEdit){
-    console.log("Todo: updateAgent");
+    updateAgent.mutate({...values,id:initialValues.id})
   }else{
     createAgent.mutate(values)
   }
