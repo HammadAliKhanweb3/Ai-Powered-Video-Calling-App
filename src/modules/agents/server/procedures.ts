@@ -6,22 +6,32 @@ import z from "zod";
 import { and, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@/constants";
 import { count } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
 
 
 
 export const agentRouter = createTRPCRouter({
 
     
-    getOne:protectedProcedure.input(z.object({id:z.string()})).query(async({input})=>{
+    getOne:protectedProcedure.input(z.object({id:z.string()})).query(async({input,ctx})=>{
 
         const [existingData] = await db.
         select(
             { ...getTableColumns(agents),
-            meetingCount: sql<number>`5,`}
+            meetingCount: sql<number>`5`}
         )
         .from(agents)
-        .where(eq(agents.id,input.id))
-        
+        .where(
+            and(
+            eq(agents.id,input.id),
+            eq(agents.userId,ctx.auth.user.id)
+        ),              )
+
+        if(!existingData){
+           throw new TRPCError({code:"UNAUTHORIZED",message:"Agents not exists"})
+        }
+
+
         return existingData
 
     }),
