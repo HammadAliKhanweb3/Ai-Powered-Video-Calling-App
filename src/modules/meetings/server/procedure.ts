@@ -6,11 +6,51 @@ import { and, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@/constants";
 import { count } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import { meetingsInsertSchema, meetingsUpdateSchema } from "../schema";
 
 
 
 export const meetingsRouter = createTRPCRouter({
 
+       update:protectedProcedure
+       .input(meetingsUpdateSchema)
+       .mutation(async ({input,ctx})=>{
+    
+        const updatedMeeting = await db
+        .update(meetings)
+        .set(input)
+        .where(
+        and(
+            eq(meetings.id,input.id),
+            eq(meetings.userId,ctx.auth.user.id),
+    
+        )
+        ).returning()
+    
+        if(!updatedMeeting){
+            throw new TRPCError({code:"UNAUTHORIZED",message:"Meeting not found"})
+          }
+          return updatedMeeting
+    
+    
+        
+       }),
+
+    create: protectedProcedure
+         .input(meetingsInsertSchema)
+         .mutation(async ({input,ctx})=>{        
+            
+            const [createdMeeting] = await
+            db.insert(meetings)
+            .values({
+                ...input, 
+                userId: ctx.auth.user.id
+            }).returning()
+    
+            return createdMeeting
+
+            //TODO: create stream Call,Upsert stream Call
+         }),
     
     getOne:protectedProcedure.input(z.object({id:z.string()})).query(async({input,ctx})=>{
 
@@ -26,7 +66,7 @@ export const meetingsRouter = createTRPCRouter({
         ),              )
 
         if(!existingData){
-           throw new TRPCError({code:"UNAUTHORIZED",message:"Meetingss not exists"})
+           throw new TRPCError({code:"UNAUTHORIZED",message:"Meetings not exists"})
         }
 
 
