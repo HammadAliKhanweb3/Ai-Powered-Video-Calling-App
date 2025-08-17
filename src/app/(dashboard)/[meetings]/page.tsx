@@ -1,12 +1,28 @@
+import { auth } from "@/lib/auth"
+import { MeetingsListHeader } from "@/modules/meetings/components/meetings-list-header"
 import { MeetingsView, MeetingsViewError, MeetingsViewLoader } from "@/modules/meetings/server/ui/views/meetings-view"
 import { getQueryClient, trpc } from "@/trpc/server"
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
+import { headers } from "next/headers"
+import { redirect } from "next/navigation"
 import { Suspense } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 
 
 
-const page = () => {
+const page =async () => {
+    
+    
+    const session =await auth.api.getSession(
+      {
+         headers:await headers()
+      }
+    )
+  
+  
+    if(!session){
+      redirect("/sign-in")
+    }
 
     const queryClient = getQueryClient()
     
@@ -16,7 +32,8 @@ const page = () => {
 
   return (
 
-    <div>
+    <>
+      <MeetingsListHeader/>
        <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<MeetingsViewLoader/>}>
             <ErrorBoundary fallback={<MeetingsViewError/>}>
@@ -25,7 +42,7 @@ const page = () => {
         </Suspense>
        </HydrationBoundary>
           
-    </div>
+    </>
 
 
   )

@@ -1,4 +1,3 @@
-import { id } from "date-fns/locale";
 import {z} from "zod";
 
 
@@ -11,6 +10,6 @@ export const agentInsertSchema = z.object({
 
 export const agentUpdateSchema = agentInsertSchema.extend({
 
-    id:z.string().min(1,{message:"Name is required"}),
+    id:z.string().min(1,{message:"Id is required"}),
 })
 
