@@ -3,13 +3,14 @@
 import { EmptyState } from "@/components/empty-state"
 import { ErrorState } from "@/components/error-state"
 import { LoadingState } from "@/components/loading-state"
-import { columns } from "@/components/ui/coloumn"
-import { DataTable } from "@/components/ui/data-table"
+import { columns } from "@/modules/meetings/components/coloumn"
+
 import { useTRPC } from "@/trpc/client"
 import {  useSuspenseQuery } from "@tanstack/react-query"
 import { useAgentsFilters } from "../../hooks/agents-filter"
 import { DataPagination} from "../../components/data-pagination"
 import { useRouter } from "next/navigation"
+import { DataTable } from "@/components/data-table"
 
 export const AgentsView = () => {
    const router = useRouter()
