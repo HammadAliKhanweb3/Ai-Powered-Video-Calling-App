@@ -27,7 +27,7 @@ initialValues?:MeetingsGetOne
 }
 
 
- export const  MeetingsForm = ({onSuccess,onCancel,initialValues}:MeetingFormProps) =>{
+ export const  MeetingForm = ({onSuccess,onCancel,initialValues}:MeetingFormProps) =>{
 
   const [open,setOpen] = useState(false)
   const [agentSearch,setAgentSearch] = useState("")
