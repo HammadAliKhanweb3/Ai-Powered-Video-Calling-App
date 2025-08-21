@@ -9,6 +9,10 @@ import { useRouter } from "next/navigation"
 import { useConfirm } from "@/hooks/use-delete"
 import { UpdateMeetingDialog } from "../../components/update-meeting-dialog"
 import { useState } from "react"
+import { UpcomingState } from "../../components/upcoming-state"
+import { CancelledState } from "../../components/cancelled-state"
+import { ProcessingState } from "../../components/processing-state"
+import { ActiveState } from "../../components/active-state"
 
 
 
@@ -56,6 +60,12 @@ export const MeetingIdView =({meetingId}:Props)=>{
             
         }
 
+        const  isActive = data.status === "active"
+        const  isUpcoming = data.status === "upcoming"
+        const  isComleted = data.status === "completed"
+        const  isProcessing = data.status === "processing"
+        const  isCancelled = data.status === "cancelled"
+
 
 return(
 
@@ -78,7 +88,19 @@ return(
         onEdit={()=>{}}
         onRemove={handleRemoveMeeting}
         />
-        {JSON.stringify(data)}
+        {isActive &&
+         <ActiveState
+         meetingId={meetingId}
+        />}
+        {isComleted && <div>Completed</div>}
+        {isProcessing && <ProcessingState/>}
+        {isCancelled && <CancelledState/>}
+        {isUpcoming && 
+        <UpcomingState
+        meetingId={meetingId}
+         onCancelMeeting={()=>{}}
+         isCancelling={false}
+        />}
     </div>
   </>
     )
