@@ -97,13 +97,13 @@ const handleRemoveAgent = async()=>{
 }
 
 
-export const AgentsIdViewLoader= ()=>{
+export const MeetingsIdViewLoader= ()=>{
 
    return (
    <LoadingState title="Loading Agent" description="This may take a few second..."/>
    )
 }
-export const AgentsIdViewError= ()=>{
+export const MeetingsIdViewError= ()=>{
 
    return (
       <ErrorState title="Error in loading agent" description="Something went wrong..."/>
