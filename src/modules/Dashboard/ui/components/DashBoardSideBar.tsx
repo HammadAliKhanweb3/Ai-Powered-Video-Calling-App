@@ -1,3 +1,4 @@
+"use client"
 
 import { Separator } from '@/components/ui/separator'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
@@ -6,12 +7,13 @@ import { BotIcon, StarIcon, VideoIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import DashboardUserButton from './DashboardUserButtton'
+import { usePathname } from 'next/navigation'
 
 
 
 const DashBoardSideBar = () => {
   
-  const pathname = "/meetings"
+  const pathname = usePathname()
     
     const firstSection=[
         {
