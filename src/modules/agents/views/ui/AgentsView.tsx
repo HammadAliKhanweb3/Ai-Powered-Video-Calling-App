@@ -3,7 +3,7 @@
 import { EmptyState } from "@/components/empty-state"
 import { ErrorState } from "@/components/error-state"
 import { LoadingState } from "@/components/loading-state"
-import { columns } from "@/modules/meetings/components/coloumn"
+import { columns } from "@/modules/agents/components/column"
 
 import { useTRPC } from "@/trpc/client"
 import {  useSuspenseQuery } from "@tanstack/react-query"

@@ -141,7 +141,7 @@ initialValues?:AgentGetOne
                 Instructions
              </FormLabel>
              <FormControl>
-                <Textarea {...field} placeholder="you are helpful assistant that can answer questoins and help with tasks."/>
+                <Textarea {...field} placeholder="You are a helpful AI assistant for voice conversations. Be conversational, engaging, and provide clear, concise responses. For example: 'I'm here to help you with any questions or tasks you have. What would you like to discuss today?'"/>
              </FormControl>
              <FormMessage/>
              </FormItem>
