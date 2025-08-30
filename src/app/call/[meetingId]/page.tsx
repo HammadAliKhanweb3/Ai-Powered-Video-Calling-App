@@ -43,13 +43,6 @@ const Page =async ({params}:Props) => {
     <div>
     
     <HydrationBoundary state={dehydrate(queryClient)}>
-        {/* <Suspense>
-         <ErrorBoundry>
-            <CallView
-            meetingId={meetingId}
-            />
-         </ErrorBoundry>
-        </Suspense> */}
         <CallView
             meetingId={meetingId}
             />

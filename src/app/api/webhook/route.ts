@@ -1,8 +1,10 @@
 import { db } from "@/db";
 import { agents, meetings } from "@/db/schema";
+import { inngest } from "@/inngest/client";
 import { streamVideo } from "@/lib/stream-video";
-import { CallSessionStartedEvent } from "@stream-io/node-sdk";
-import { error } from "console";
+import { CallSessionEndedEvent, CallSessionParticipantLeftEvent, CallSessionStartedEvent, CallTranscriptionReadyEvent, CallRecordingReadyEvent } 
+from "@stream-io/node-sdk";
+
 import { and, eq, not } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,7 +23,7 @@ export async function POST(req:NextRequest){
     const apiKey = req.headers.get("x-api-key")
 
 
-    if(!signature || !!apiKey){
+    if(!signature || !apiKey){
         return NextResponse.json(
             {error:"Missing signature or API key"},
             {status:400}
@@ -91,19 +93,104 @@ export async function POST(req:NextRequest){
         eq(agents.id,existingMeeting.agentId)
     )
 
-     if(!existingMeeting){
+     if(!existingAgent){
         return NextResponse.json({error:"Agent not found"},{status:404})
     }
 
-    // const call 
+    const call = streamVideo.video.call("default",meetingId)
 
+    const realtimeClient = await streamVideo.video.connectOpenAi({
+        call,
+        openAiApiKey: process.env.OPENAI_API_KEY!,
+        agentUserId: existingAgent.id,
+    });
+
+
+    await realtimeClient.updateSession({
+        instructions: `${existingAgent.instructions}`,
+    });
+
+  }else if (eventType === "call.session_participant_left"){
+
+    const event = payload as CallSessionParticipantLeftEvent
+    const meetingId = event.call_cid.split(":")[1]
+
+    if(!meetingId){
+        return NextResponse.json({error:"Meeting not found"},{status:404})
+    }
+    const call = streamVideo.video.call("default",meetingId)
+    await call.end()
+
+  } else if (eventType === "call.session_ended"){
+  
+    const event = payload as CallSessionEndedEvent
+    const meetingId = event.call.custom?.meetingId
+
+    if(!meetingId){
+        return NextResponse.json({error:"Meeting not found"},{status:404})
+    }
+    await db
+    .update(meetings)
+    .set({
+        status:"processing",
+        endedAt:new Date()
+    })
+    .where(
+        and(eq(meetings.id,meetingId),eq(meetings.status,"active"))
+    )
+
+} else if (eventType === "call.transcription_ready"){
+
+    const event = payload as CallTranscriptionReadyEvent
+    const meetingId = event.call_cid.split(":")[1]
+
+    if(!meetingId){
+        return NextResponse.json({error:"Meeting not found"},{status:404})
+    }
+
+    const [updatedMeeting] = await db
+    .update(meetings)
+    .set({
+        transcriptUrl:event.call_transcription.url
+    })
+    .where(
+        and(eq(meetings.id,meetingId))
+    ).returning()
+
+    if(!updatedMeeting){
+        return NextResponse.json({error:"Meeting not found"},{status:404})
+    }
+
+  
+    await inngest.send({
+        name:"meetings/proccessing",
+        data:{
+            meetingId:updatedMeeting.id,
+            transcriptUrl:updatedMeeting.transcriptUrl,
+        }
+    })
+
+
+
+}else if(eventType === "call.recording_ready"){
+
+    const event = payload as CallRecordingReadyEvent
+    const meetingId = event.call_cid.split(":")[1]
+
+    if(!meetingId){
+        return NextResponse.json({error:"Meeting not found"},{status:404})
+    }
+
+    await db
+    .update(meetings)
+    .set({
+        recordingUrl:event.call_recording.url
+    })
+    .where(
+        and(eq(meetings.id,meetingId))
+    )
 
   }
   
-
-
-
-
-   return NextResponse.json({status:"ok"})
-    
+  return NextResponse.json({status:"ok"})
 }

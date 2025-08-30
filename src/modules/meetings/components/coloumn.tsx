@@ -21,7 +21,7 @@ const statusIconMap={
 upcoming:ClockArrowUpIcon,
   active:LoaderIcon,
   completed:CircleCheckIcon,
-  proccessing:LoaderIcon,
+  processing:LoaderIcon,
   cancelled:CircleXIcon
 
   }
@@ -92,15 +92,13 @@ export const columns: ColumnDef<MeetingsGetMany[number]>[] = [
 {
   accessorKey:"duration",
   header:"duration",
-  cell:({row}
-    
-  )=>{
+  cell:({row})=>{
       return(
         <Badge
       className="capitalize [&>svg]:size-4 flex items-center gap-x-2"
 
       >
-        <ClockFadingIcon className="texg-blue-700"/>
+        <ClockFadingIcon className="text-blue-700"/>
         {row.original.duration ? formDuration(row.original.duration):"No duration"}
       </Badge>
       )

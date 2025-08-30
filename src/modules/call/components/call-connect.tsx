@@ -17,7 +17,7 @@ interface Props {
 
 
 
-export const CallConnect = ({meetingId,meetingName,userId,userName,userImage}:Props)=>{
+export const CallConnect = ({meetingId,meetingName,userId,userName,userImage}:Props) => {
 
    const trpc = useTRPC() 
 
@@ -57,8 +57,7 @@ export const CallConnect = ({meetingId,meetingName,userId,userName,userImage}:Pr
     if(!client) return
    
     const _call = client.call("default",meetingId)
-    _call.camera.disable()
-    _call.microphone.disable()
+
     setCall(_call)
 
     return()=>{
