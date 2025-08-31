@@ -13,6 +13,7 @@ import { UpcomingState } from "../../components/upcoming-state"
 import { CancelledState } from "../../components/cancelled-state"
 import { ProcessingState } from "../../components/processing-state"
 import { ActiveState } from "../../components/active-state"
+import { CompletedState } from "../../components/completed-state"
 
 
 
@@ -81,7 +82,7 @@ return(
      onOpenChange={setUpdateMeetingDialogOpen}
      initialValues={data}
      />
-    <div className="flex-1 flex  py-4 px-4 md:px-8 flex-col gap-y-4">
+    <div className="flex-1 flex py-4 px-4 md:px-8 flex-col gap-y-4">
         <MeetingIdViewHeader
         meetingId={meetingId}
         meetingName={data.name}
@@ -92,7 +93,7 @@ return(
          <ActiveState
          meetingId={meetingId}
         />}
-        {isComleted && <div>Completed</div>}
+        {isComleted && <CompletedState data={data}/>}
         {isProcessing && <ProcessingState/>}
         {isCancelled && <CancelledState/>}
         {isUpcoming && 
