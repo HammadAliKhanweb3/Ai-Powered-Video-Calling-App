@@ -5,17 +5,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { GeneratedAvatar } from "../../../components/generated-avatar"
 import { CircleCheckIcon, CircleXIcon, ClockArrowUpIcon, ClockFadingIcon, CornerDownRightIcon, LoaderIcon} from "lucide-react"
 import { Badge } from "../../../components/ui/badge"
-import  humanizeDuration from "humanize-duration"
-import { cn } from "@/lib/utils"
+import { cn, formatDuration } from "@/lib/utils"
 import { format } from "date-fns"
 
-function formDuration (seconds:number){
-  return humanizeDuration(seconds*1000,{
-    largest:1,
-    round:true,
-    units:["h","m","s"]
-  })
-}
 
 const statusIconMap={
 upcoming:ClockArrowUpIcon,
@@ -99,7 +91,7 @@ export const columns: ColumnDef<MeetingsGetMany[number]>[] = [
 
       >
         <ClockFadingIcon className="text-blue-700"/>
-        {row.original.duration ? formDuration(row.original.duration):"No duration"}
+        {row.original.duration ? formatDuration(row.original.duration):"No duration"}
       </Badge>
       )
   }
