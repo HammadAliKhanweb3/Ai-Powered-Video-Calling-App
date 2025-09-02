@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { agents, meetings, user } from "@/db/schema";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { createTRPCRouter, premiumProcudure, protectedProcedure } from "@/trpc/init";
 import z from "zod";
 import { and, desc, eq, getTableColumns, ilike,  inArray,  sql } from "drizzle-orm";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@/constants";
@@ -199,7 +199,7 @@ export const meetingsRouter = createTRPCRouter({
         
        }),
 
-    create: protectedProcedure
+    create: premiumProcudure("meetings")
          .input(meetingsInsertSchema)
          .mutation(async ({input,ctx})=>{        
             

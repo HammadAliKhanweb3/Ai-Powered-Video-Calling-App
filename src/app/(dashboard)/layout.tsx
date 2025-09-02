@@ -1,6 +1,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar"
-import DashBoardNavbar from "@/modules/Dashboard/ui/components/DashboardNavbar"
-import DashBoardSideBar from "@/modules/Dashboard/ui/components/DashBoardSideBar"
+import DashBoardNavbar from "@/modules/Dashboard/ui/components/dashboard-navbar"
+import DashBoardSideBar from "@/modules/Dashboard/ui/components/dashboard-sidebar"
 
     
 interface Props {
