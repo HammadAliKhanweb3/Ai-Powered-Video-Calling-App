@@ -38,15 +38,19 @@ initialValues?:AgentGetOne
                 await queryClient.invalidateQueries(
                     trpc.agents.getMany.queryOptions({})
                 )
+                await queryClient.invalidateQueries(
+                  trpc.premium.getFreeUsage.queryOptions()
+              )
                 onSuccess?.()
             },   
              
-            //Todo: Invalidate free tier usage
-
             onError:(error)=>{
             toast.error(error.message)
 
             // Todo check if error code is "FORBIDDEN",redirect to upgrade
+            if(error.data?.code === "FORBIDDEN"){
+              router.push("/upgrade")
+            }
             },
         }
     )
