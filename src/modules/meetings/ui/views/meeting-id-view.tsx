@@ -44,12 +44,13 @@ export const MeetingIdView =({meetingId}:Props)=>{
 
     const removeMeeting = useMutation(
         trpc.meetings.remove.mutationOptions({
-            onSuccess:()=>{
-                queryClient.invalidateQueries(trpc.meetings.getMany.queryOptions({}))
+            onSuccess:async ()=>{
+             await queryClient.invalidateQueries(trpc.meetings.getMany.queryOptions({}))
 
                 await queryClient.invalidateQueries(
-                    trpc.premium.getFreeUsage.queryOptions()
+               trpc.premium.getFreeUsage.queryOptions()
                 )
+                
                 router.push("/meetings")
  
             }
