@@ -59,7 +59,9 @@ const {data,isPending} = authClient.useSession()
       </DropdownMenuLabel>
 
       <DropdownMenuSeparator/>
-      <DropdownMenuItem className="cursor-pointer flex justify-between items-center">
+      <DropdownMenuItem className="cursor-pointer flex justify-between items-center"
+      onClick={()=>authClient.customer.portal()}
+      >
         Biling
         <CreditCardIcon className="size-4"/>
       </DropdownMenuItem>
