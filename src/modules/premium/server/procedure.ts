@@ -38,7 +38,7 @@ export const premiumRouter = createTRPCRouter({
       })
 
       return products.result.items
-    })})
+    }),
 
     getFreeUsage: protectedProcedure.query(async({ctx})=>{
 
@@ -76,5 +76,6 @@ export const premiumRouter = createTRPCRouter({
          agentCount:userAgents.count,
         }   
 
-
     })
+
+})

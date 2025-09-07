@@ -6,7 +6,7 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import React, { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-
+ 
 
 
 const page = async () => {

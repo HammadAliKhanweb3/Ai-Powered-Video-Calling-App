@@ -1,4 +1,4 @@
-import { BanIcon, VideoIcon } from "lucide-react"
+import {  VideoIcon } from "lucide-react"
 import { EmptyState } from "../../../components/empty-state"
 import { Button } from "../../../components/ui/button"
 import Link from "next/link"
@@ -26,10 +26,6 @@ export const UpcomingState = ({meetingId,isCancelling,onCancelMeeting}:Props)=>{
     />
 
     <div className="flex flex-col-reverse lg:flex-row lg:justify-center items-center gap-2 w-full">
-        <Button disabled={isCancelling}  className="w-full lg:w-auto"  variant="secondary" onClick={onCancelMeeting}>
-            <BanIcon />
-          Cancel
-        </Button>
         
         <Button asChild className="w-full lg:w-auto" disabled={isCancelling} >
             <Link href={`/call/${meetingId}`}>
