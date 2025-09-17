@@ -8,6 +8,8 @@ import { polarClient } from "./polar";
  
 const auth = betterAuth({
 
+  baseURL: process.env.AUTH_URL,
+
   plugins:[
   polar({
    client:polarClient,
@@ -43,7 +45,8 @@ const auth = betterAuth({
     schema:{
        ...scehma,
     }
-})
+}),
+trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL!],
 });
 
 
