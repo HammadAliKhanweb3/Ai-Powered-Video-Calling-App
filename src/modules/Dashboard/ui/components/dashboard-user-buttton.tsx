@@ -29,7 +29,7 @@ const {data,isPending} = authClient.useSession()
   
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="rounded-lg p-3 flex flex-items-center justify-between border border-border/10 w-ful bg-wihte bg-white/10 overflow-hidden">
+      <DropdownMenuTrigger className="rounded-lg p-3 flex flex-items-center justify-between border border-border/10 w-ful bg-wihte bg-white/10 overflow-hidden gap-x-1">
       {data.user.image? (
         <Avatar>
           <AvatarImage src={data.user.image}/>

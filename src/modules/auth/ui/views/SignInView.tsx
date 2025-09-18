@@ -80,7 +80,6 @@ await authClient.signIn.email ({
   },{
     onSuccess:()=>{
      setPending(false)
-     router.push("/")
     },
     onError:({error})=>{
       setPending(false)
