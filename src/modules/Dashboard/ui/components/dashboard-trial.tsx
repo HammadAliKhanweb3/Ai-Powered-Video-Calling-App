@@ -26,7 +26,7 @@ export const DashboardTrial = ()=>{
             </div>
             
             <div className="flex flex-col gap-y-2">
-              <p className="text-sm">{data.meetingCount}/{MAX_FREE_MEETINGS} Agents</p>
+              <p className="text-sm">{data.meetingCount}/{MAX_FREE_MEETINGS} Meetings</p>
               <Progress value={(data.meetingCount/MAX_FREE_MEETINGS)*100}/>
             </div>
             </div>   
