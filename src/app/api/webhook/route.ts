@@ -107,16 +107,22 @@ export async function POST(req:NextRequest){
 
     const call = streamVideo.video.call("default",meetingId)
 
-    const realtimeClient = await streamVideo.video.connectOpenAi({
-        call,
-        openAiApiKey: process.env.OPENAI_API_KEY!,
-        agentUserId: existingAgent.id,
-    });
+    try {
+        const realtimeClient = await streamVideo.video.connectOpenAi({
+            call,
+            openAiApiKey: process.env.OPENROUTER_API_KEY!,
+            agentUserId: existingAgent.id,
+        });
 
-
-    await realtimeClient.updateSession({
-        instructions: `${existingAgent.instructions}`,
-    });
+        await realtimeClient.updateSession({
+            instructions: `${existingAgent.instructions}`,
+        });
+        
+        console.log("Agent connected successfully for meeting:", meetingId);
+    } catch (error) {
+        console.error("Failed to connect agent:", error);
+        // Don't return error - let the call continue without agent
+    }
 
   }else if (eventType === "call.session_participant_left"){
 
