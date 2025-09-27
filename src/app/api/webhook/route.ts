@@ -110,39 +110,31 @@ export async function POST(req:NextRequest){
 
     const call = streamVideo.video.call("default",meetingId)
 
-    // Retry logic for agent connection
-    let retryCount = 0;
-    const maxRetries = 3;
-    
-    while (retryCount < maxRetries) {
-        try {
-            const realtimeClient = await streamVideo.video.connectOpenAi({
-                call,
-                openAiApiKey: process.env.OPENAI_API_KEY!,
-                agentUserId: existingAgent.id,
-            });
+    try {
+        console.log("Attempting to connect agent:", existingAgent.name);
+        
+        const realtimeClient = await streamVideo.video.connectOpenAi({
+            call,
+            openAiApiKey: process.env.OPENAI_API_KEY!,
+            agentUserId: existingAgent.id,
+        });
 
-            
-            await realtimeClient.updateSession({
-                instructions: `${existingAgent.instructions}`,
-            });
-            
-            console.log("Agent connected successfully for meeting:", meetingId);
-            break; // Success, exit retry loop
-            
-        } catch (error) {
-            retryCount++;
-            console.error(`Failed to connect agent (attempt ${retryCount}/${maxRetries}):`, error);
-            
-            if (retryCount >= maxRetries) {
-                console.error("Max retries reached, agent connection failed");
-                // Don't return error - let the call continue without agent
-                break;
-            }
-            
-            // Wait before retry (exponential backoff)
-            await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
-        }
+        console.log("OpenAI client created, updating session...");
+
+        await realtimeClient.updateSession({
+            instructions: `${existingAgent.instructions}`,
+        });
+        
+        console.log("Agent connected successfully for meeting:", meetingId);
+        
+    } catch (error) {
+        console.error("EXACT ERROR - Agent connection failed:", error);
+        console.error("Error details:", {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
+        });
+        // Don't return error - let the call continue without agent
     }
 
   }else if (eventType === "call.session_participant_left"){
