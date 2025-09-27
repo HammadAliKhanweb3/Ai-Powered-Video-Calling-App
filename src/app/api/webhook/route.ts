@@ -122,6 +122,7 @@ export async function POST(req:NextRequest){
                 agentUserId: existingAgent.id,
             });
 
+            
             await realtimeClient.updateSession({
                 instructions: `${existingAgent.instructions}`,
             });
