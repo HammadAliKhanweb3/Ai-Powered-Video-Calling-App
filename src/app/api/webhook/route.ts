@@ -13,12 +13,15 @@ import OpenAi from "openai"
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { StreamChat } from "stream-chat";
 
+// Force Node.js runtime for WebSocket compatibility
+export const runtime = "nodejs";
+export const maxDuration = 60;
+
 
 
 
 const openaiClient = new OpenAi({
-    apiKey:process.env.OPENROUTER_API_KEY!,
-    baseURL: "https://openrouter.ai/api/v1",
+    apiKey:process.env.OPENAI_API_KEY!,
 })
 
 function verifyVideoSignatureSdk (body:string,signature:string):boolean{
@@ -107,16 +110,39 @@ export async function POST(req:NextRequest){
 
     const call = streamVideo.video.call("default",meetingId)
 
-    const realtimeClient = await streamVideo.video.connectOpenAi({
-        call,
-        openAiApiKey: process.env.OPENAI_API_KEY!,
-        agentUserId: existingAgent.id,
-    });
+    // Retry logic for agent connection
+    let retryCount = 0;
+    const maxRetries = 3;
+    
+    while (retryCount < maxRetries) {
+        try {
+            const realtimeClient = await streamVideo.video.connectOpenAi({
+                call,
+                openAiApiKey: process.env.OPENAI_API_KEY!,
+                agentUserId: existingAgent.id,
+            });
 
-
-    await realtimeClient.updateSession({
-        instructions: `${existingAgent.instructions}`,
-    });
+            await realtimeClient.updateSession({
+                instructions: `${existingAgent.instructions}`,
+            });
+            
+            console.log("Agent connected successfully for meeting:", meetingId);
+            break; // Success, exit retry loop
+            
+        } catch (error) {
+            retryCount++;
+            console.error(`Failed to connect agent (attempt ${retryCount}/${maxRetries}):`, error);
+            
+            if (retryCount >= maxRetries) {
+                console.error("Max retries reached, agent connection failed");
+                // Don't return error - let the call continue without agent
+                break;
+            }
+            
+            // Wait before retry (exponential backoff)
+            await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+        }
+    }
 
   }else if (eventType === "call.session_participant_left"){
 

@@ -4,7 +4,8 @@ import { StreamClient } from "@stream-io/node-sdk";
 
 
 
-export const streamVideo = new StreamClient(
-    process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY!,
-    process.env.STREAM_VIDEO_API_SECRET!,
-)
+export const streamVideo = new StreamClient({
+    apiKey: process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY!,
+    apiSecret: process.env.STREAM_VIDEO_API_SECRET!,
+    timeout: 10000, // Increase from 3000ms to 10 seconds
+})
