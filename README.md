@@ -112,12 +112,6 @@ Roadmap & Notes
 
 ---
 
-If you'd like, I can:
-
-- Add an `env.example` file with sensible defaults
-- Add CI config (GitHub Actions) to run lint/build/tests
-- Generate a short contributor guide and codeowners file
-
 Contact / Maintainers: See `package.json` and `src/lib/auth.ts` for author and support references.
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
