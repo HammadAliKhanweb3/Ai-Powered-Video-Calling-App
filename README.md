@@ -2,6 +2,8 @@ AI-Powered Video Calling App
 ================================
 
 A production-ready, TypeScript-first Next.js application that enables AI-enhanced video calling and collaboration. Built with modern tooling for realtime media, messaging, server-side orchestration, and a robust API surface intended for enterprise and developer use.
+![Uploading image.png…]()
+
 
 Key Features
 ------------
