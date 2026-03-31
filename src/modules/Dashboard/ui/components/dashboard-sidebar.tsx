@@ -41,8 +41,8 @@ const DashBoardSideBar = () => {
     <Sidebar>
      <SidebarHeader className='text-sidebar-accent-foreground'>
       <Link href={"/"} className='flex items-center gap-2 p-2 pt-2'>
-      <Image src={"/logo.png"} alt='Meet Ai' height={36} width={26}/>
-      <p className='text-2xl font-semibold'>Meet Ai</p>
+      <Image src={"/logo.png"} alt='Agent Meet' height={36} width={26}/>
+      <p className='text-2xl font-semibold'>Agent Meet</p>
       </Link>
      </SidebarHeader>
 

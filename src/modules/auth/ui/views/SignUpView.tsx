@@ -253,7 +253,7 @@ const onSocial = (provider:"github" | "google")=> {
       <div className="bg-radial from-sidebar-accent to-sidebar p-4 relative hidden md:flex flex-col gap-y-4
       items-center justify-center">
         <img src="/logo.png" alt="image"  className="h-[60px] w-[92px]"/>
-        <p className="text-3xl font-semibold text-white">Meet.Ai</p>
+        <p className="text-3xl font-semibold text-white">Agent Meet</p>
       </div>
 
     </CardContent> 
