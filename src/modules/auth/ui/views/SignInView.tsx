@@ -157,7 +157,7 @@ await authClient.signIn.email ({
               <AlertTitle>{error}</AlertTitle>
               </Alert>
             )}
-            <Button disabled={pending} className="w-fulll">Sign IN</Button>
+            <Button disabled={pending} className="w-fulll">Sign In</Button>
             <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
             <span className="bg-card text-muted-foreground relative z-10 px-2">
   Or continue with
@@ -196,7 +196,7 @@ await authClient.signIn.email ({
       <div className="bg-radial from-sidebar-accent to-sidebar p-4 relative hidden md:flex flex-col gap-y-4
       items-center justify-center">
         <img src="/logo.png" alt="image"  className="h-[60px] w-[92px]"/>
-        <p className="text-3xl font-semibold text-white">Meet.Ai</p>
+        <p className="text-3xl font-semibold text-white">Agent Meet</p>
       </div>
 
     </CardContent> 
